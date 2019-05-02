@@ -160,6 +160,18 @@ void chain<T>::chainprint()
 		currentNode = currentNode->next;
 	}
 }
+template<class T>
+void chain<T>::insert(int theIndex, const T& theElement)
+{
+	chainNode<T>* currentNode = firstNode;
+	for (int i = 0; i < theIndex; i++)
+	{
+		currentNode = currentNode->next;
+	}
+	chainNode<T>* insertNode = new chainNode<T>(theElement);
+	insertNode->next = currentNode->next;
+	currentNode->next = insertNode;
+}
 int main(int argc, char** argv)
 {
 	int a[] = { 1, 2, 2, 3, 3, 4, 5, 6, 7, 8 };
@@ -168,8 +180,10 @@ int main(int argc, char** argv)
 	{
 		cout << mychain.get(i) << endl;
 	}
-    cout<<endl;
 	mychain.erase(0);
+	mychain.chainprint();
+	cout<<endl;
+	mychain.insert(1, 2019);
 	mychain.chainprint();
 	return 0;
 }
