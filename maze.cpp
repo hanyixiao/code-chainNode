@@ -6,24 +6,51 @@ class position{
 public:
     int row;
     int col;
+    ~position(){};
+    position(){};
+    position(int row,int col):row(row),col(col){};
 };
-bool findPath(bool **maze,int size,stack<position> *path)
+bool findPath(bool *srcmaze,int row,int col,int size,position target)
 {//寻找一条从入口到达出口的路lujing
 // 如果找到返回true否则返回false    
     //初始化偏移量
+    stack<position> *path;
     path=new stack<position>;
     position offset[4];
     offset[0].row=0;offset[0].col=1;//右
     offset[1].row=1;offset[1].col=0;//下
     offset[2].row=0;offset[2].col=-1;//左
     offset[3].row=-1;offset[3].col=0;//上
-
-    //初始化迷宫外围的墙壁
-    for(int i=0;i<=size+1;i++)
+    //get the dimension of array
+//    int row=sizeof(maze[0])/sizeof(bool);
+//    int col=sizeof(maze)/sizeof(bool);
+    printf("row is %d\n",row);
+    printf("col is %d\n",col);
+    printf("srcmaze %d\n",srcmaze[(row-1)*col+7]);
+    bool maze[size+1][size+1]={};
+    for(int i=0;i<size+1;i++)
     {
-        maze[0][i]=maze[size+1][i]=1;
-        maze[i][0]=maze[i][size+1]=1;
+        for(int j=0;j<size+1;j++)
+        {
+            maze[i][j]=1;
+        }
     }
+    for(int i=1;i<row+1;i++)
+    {
+        for(int j=1;j<col+1;j++)
+        {
+            maze[i][j]=srcmaze[(i-1)*col+(j-1)];
+        }
+    }
+    for(int i=0;i<size+1;i++)
+    {
+        for(int j=0;j<size+1;j++)
+        {
+            cout<<maze[i][j]<<",";
+        }
+        cout<<endl;
+    }
+    cout<<endl;
 
     position here;
     here.row=1;
@@ -32,7 +59,7 @@ bool findPath(bool **maze,int size,stack<position> *path)
     int option=1;
     int lastOption=3;
     //寻找一条路径
-    while(here.row!=size||here.col!=size)
+    while(here.row!=target.row||here.col!=target.col)
     {   //没有找到出口
         //找到要移动的相邻的一步
         int r,c;
@@ -86,14 +113,10 @@ int main(int argc,char **argv)
         }
         cout<<endl;
     }
-    stack<position> *path;
-    cout<<findPath((bool **)mymaze1,40,path);
- /*   for(int i=0;i<path.size();i++)
-    {
-        cout<<path->top.row<<','<<path->top.row<<endl;
-        path->pop();
-    }
-*/    cout<<"game end"<<endl;
+    printf("%d\n",sizeof(mymaze1)/sizeof(bool));
+    position target(6,8);
+    cout<<findPath((bool *)mymaze1,6,9,10,target)<<endl;
+    cout<<"game end"<<endl;
     
     return 0;
 }
