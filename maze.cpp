@@ -56,7 +56,7 @@ bool findPath(bool *srcmaze,int row,int col,int size,position target)
     here.row=1;
     here.col=1;
     maze[1][1]=1;
-    int option=1;
+    int option=0;
     int lastOption=3;
     //寻找一条路径
     while(here.row!=target.row||here.col!=target.col)
@@ -92,6 +92,12 @@ bool findPath(bool *srcmaze,int row,int col,int size,position target)
             here=next;
         }
     }
+    while(!path->empty())
+    {
+        cout<<'('<<path->top().row<<","<<path->top().col<<')'<<"->";
+        path->pop();
+    }
+    cout<<endl;
     return true;
 }
 int main(int argc,char **argv)
